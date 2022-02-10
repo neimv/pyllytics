@@ -2,7 +2,7 @@
 import pandas as pd
 import requests as req
 
-from master_reader import BaseReader
+from .master_reader import BaseReader
 
 
 class WSReader(BaseReader):

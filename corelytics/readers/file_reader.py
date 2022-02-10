@@ -1,7 +1,7 @@
 
 import pandas as pd
 
-from master_reader import BaseReader
+from .master_reader import BaseReader
 
 
 class FileReader(BaseReader):
