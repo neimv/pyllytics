@@ -26,4 +26,4 @@ class SQLModel(BaseModel):
     port: Optional[int] = None
     driver: str
     resource: str
-
+    type_read: Optional[str] = 'query'

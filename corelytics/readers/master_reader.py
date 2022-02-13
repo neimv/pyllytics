@@ -50,8 +50,12 @@ class BaseReader(metaclass=ABCMeta):
 
     def get_descriptive_stats(self, df):
         des_stats = df.describe(include='all')
+        null_stats = df.isna().sum().to_frame().T
+        null_stats.rename(index={0: "nulls"}, inplace=True)
+        des_stats = pd.concat([des_stats, null_stats])
 
         self.des_stats = des_stats.to_dict()
+        pp.pprint(self.des_stats)
 
     def get_types_recommendations(self, df):
         # @TODO: this function is necesary the refactor
@@ -117,8 +121,6 @@ class BaseReader(metaclass=ABCMeta):
                 "original": str(value),
                 "recommendation": recommend_type
             }
-
-        pp.pprint(recommendation)
 
     def get_inferential_stats(self):
         pass
