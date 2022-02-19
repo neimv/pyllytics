@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+    db:
+        image: postgres:13-alpine
+        restart: always
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+        environment:
+            POSTGRES_USER: pyllytics
+            POSTGRES_PASSWORD: pass_pyllytics
+            POSTGRES_DB: pyllytics
+        volumes:
+            - postgres-db-volume:/var/lib/postgresql/data
+
+    corelytics:
+        build: .
+        command: python run.py run-app
+        volumes:
+            - ./:/opt/app
+            - shared-app-volume-csv:/var/pyllytics/csv
+            - shared-app-volume-json:/var/pyllytics/json
+            - shared-app-volume-excel:/var/pyllytics/excel
+            - shared-app-volume-parquet:/var/pyllytics/parquet
+        depends_on:
+            - db
+            - adminer
+ 
+    backend:
+        build: .
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8888:8080
+
+volumes:
+    postgres-db-volume:
+    shared-app-volume-csv:
+    shared-app-volume-json:
+    shared-app-volume-excel:
+    shared-app-volume-parquet:

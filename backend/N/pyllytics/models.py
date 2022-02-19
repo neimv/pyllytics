@@ -39,7 +39,10 @@ class SourceModel(models.Model):
 
 
 class DescriptiveStatisticsModel(models.Model):
-    source = models.ForeignKey(SourceModel, on_delete=models.CASCADE)
+    source = models.OneToOneField(
+        SourceModel,
+        on_delete=models.CASCADE
+    )
     results = models.JSONField()
 
     class Meta:
@@ -53,10 +56,14 @@ class CorrelationModel(models.Model):
 
     class Meta:
         db_table = 'pyllytics_correlation'
+        unique_together = ('source', 'type_correlation')
 
 
 class SourceTypesModel(models.Model):
-    source = models.ForeignKey(SourceModel, on_delete=models.CASCADE)
+    source = models.OneToOneField(
+        SourceModel,
+        on_delete=models.CASCADE
+    )
     original_types = models.JSONField()
     proposed_types = models.JSONField()
 
